@@ -9,7 +9,7 @@ use App\src\Contracts\HttpProvider;
 class UserRepository implements AuthAuthenticatable
 {
 
-    public function __construct(HttpProvider $provider)
+    public function __construct(HttpClient $provider)
     {
         $this->provider = $provider->resolve;
     }

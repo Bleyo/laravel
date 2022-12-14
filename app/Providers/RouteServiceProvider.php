@@ -14,7 +14,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * The path to the "home" route for your application.
+     * The path to the "home" route of application
      *
      * Typically, users are redirected here after authentication.
      *
