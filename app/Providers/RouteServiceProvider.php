@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Filesystem\Filesystem as FilesystemFilesystem;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Cache\RateLimiting\Limit;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -17,24 +20,34 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/milestones';
 
+
+    public function register()
+    {
+        $this->app->bind(Filesystem::class, function ($service, $app) {
+            $app->make($service);
+        });
+    }
     /**
-     * Define your route model bindings, pattern filters, and other route configuration.
+     * Defines routes model binds & global structure
      *
      * @return void
      */
     public function boot()
     {
+        $this->basePath = app_path('Http\Routes');
         $this->configureRateLimiting();
 
-        $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
+        $this->routes(function (Filesystem $fs) {
+            $routeFiles = $fs->allDirectories($this->basePath);
 
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            foreach ($routeFiles as $directory) {
+                $prefix = Str::lower(Str::remove('Routes.php', $directory));
+
+                Route::middleware('web')->prefix($prefix)
+                    ->group($directory);
+            }
         });
     }
 

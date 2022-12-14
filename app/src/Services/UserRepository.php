@@ -2,14 +2,16 @@
 
 namespace App\src\Services;
 
+
 use Illuminate\Contracts\Auth\Authenticatable as AuthAuthenticatable;
+use App\src\Contracts\HttpProvider;
 
 class UserRepository implements AuthAuthenticatable
 {
 
     public function __construct(HttpProvider $provider)
     {
-        $this->provider = $provider;
+        $this->provider = $provider->resolve;
     }
 
     /**
