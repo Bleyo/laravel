@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\src\Services\Authentication;
+use Illuminate\Http\Client\Response;
 use App\src\Contracts\HttpProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -14,22 +14,10 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-    protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-    ];
+    protected $policies = [];
 
     public function register()
     {
-        // provider => (RequestInterface, )
-
-        $this->app->scoped(Authentication::class, function ($app) {
-            $app->resolving(ServerRequestInterface::class, function ($request, $app) {
-                $provider = $app->make(HttpProvider::class)
-
-                $response = Http::recorded(function (Request $request, Response $response) {
-                });
-            });
-        });
     }
 
     /**
@@ -39,9 +27,11 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->scoped(HttpProvider::class, function ($service, $app) {
+            $app->when($service::class)->needs(Response::class)
+                ->give(Http::response('"{user}"', 200, []));
+        });
 
         $this->registerPolicies();
-
-        //
     }
 }
