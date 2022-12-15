@@ -10,11 +10,12 @@ use Illuminate\Http\Client\Response;
 class HttpClient
 {
     /**
-     * Tech user's BasicAuth creds.
+     * 2764's credentials
      *
      * @var array
      */
     private $userCredentials;
+
 
     /**
      * Pending request to host's root
@@ -24,7 +25,11 @@ class HttpClient
     private $request;
 
 
-
+    /**
+     * Creates instance
+     *
+     * @param string $hostUrl
+     */
     public function __construct(string $hostUrl)
     {
         $this->request =
@@ -32,13 +37,14 @@ class HttpClient
             ->baseUrl($hostUrl)->acceptJson();
     }
 
+
     /**
-     * Resolving pending request with given filters.
+     * Resolves request
      *
      * @param array $options
-     * @return Response
+     * @return void
      */
-    public function getResolved(array $options)
+    public function resolved(array $options)
     {
         if (App::environment('local')) {
             return $this->getRequest();
@@ -47,10 +53,11 @@ class HttpClient
         return $this->request->get($this->path, $options);
     }
 
+
     /**
-     * Set path / route of registered host
+     * Sets path
      *
-     * @param string $url
+     * @param string $path
      * @return self
      */
     public function setPath(string $path = '/'): self
@@ -59,12 +66,13 @@ class HttpClient
         return $this;
     }
 
+
     /**
-     * Response is defined in Service Providers.
+     * Sets response
      *
-     * @return Response
+     * @return void
      */
-    private function getRequest()
+    private function setResponse()
     {
         return Http::fake(function (Response $mock) {
             return [$this->final => $mock];

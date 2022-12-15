@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
+use MindaUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Auth\Events\Authenticated;
-use App\Models\TeamMember;
-use App\Models\TeamContent;
 
-class User extends Authenticated
+class User extends Model
 {
     use HasFactory;
 

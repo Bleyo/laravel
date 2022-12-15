@@ -7,9 +7,9 @@ use Illuminate\Http\Client\Response;
 interface HttpContract
 {
 
+
     /**
      * Resolving pending request with given filters.
-     *
      * Fakes response for local environment.
      *
      * @param array $options
@@ -17,21 +17,21 @@ interface HttpContract
      */
     public function resolve(array $options);
 
+
     /**
-     * Set path for defined url http://domain.com/path
+     * Sets a path for the defined host
      *
      * @param string $url
      * @return self
      */
-    public function withPath(string $path = '/');
+    public function setPath(string $path = '/');
 
 
     /**
-     * Mocks request's response, local environment.
-     *
-     * Injected by Service Container
+     * Mocks request's response, the response may be
+     * modified thru HttpServiceProvider.
      *
      * @return Response
      */
-    public function fakeRequest();
+    public function setResponse();
 }

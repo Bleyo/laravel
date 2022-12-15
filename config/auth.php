@@ -1,34 +1,52 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+
 return [
 
     /*
     |--------------------------------------------------------------------------
     | Authentication
     |--------------------------------------------------------------------------
-    | This option controls the default authentication "guard"
+    | This option controls used authentication "guard", find
     |
     */
 
+
     'defaults' => [
-        'guard' => 'web'
+        'guard' => App::environment(),
+        'provider' => 'mindaweb-user'
     ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication
+    |--------------------------------------------------------------------------
+    | This option defines a guard's configuration for a given environment
+    |
+    */
+
 
     'guards' => [
-        'http' => [
-            'driver' => 'session',
+        'production' => [
+            'driver' => 'token',
             'provider' => 'users',
         ],
+        'local' => [
+            'driver' => 'cookie'
+        ]
     ],
 
+
     'providers' => [
-        'users' => [
+        'mindaweb-user' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
     ],
 
-    'host' => 'http://auth.pictet.com/',
+    'provider' => 'http://auth.pictet.com/',
 
     /*
     |--------------------------------------------------------------------------

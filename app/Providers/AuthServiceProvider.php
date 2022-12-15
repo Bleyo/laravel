@@ -34,12 +34,22 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [];
 
+
+    /**
+     * Cookies rules
+     * @link https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
+     *
+     * @var array
+     */
+    protected $rules;
+
+
     public function register()
     {
     }
 
     /**
-     * Registering customised auth servie, requires ldap
+     * Custom authentication boot
      *
      * @return void
      */
@@ -47,50 +57,23 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->app->resolve(App::class, function (App $app) {
             $authManager = new AuthManager($app);
-            $sessionDriver = $authManager
-                ->createSessionDriver('mw-session', config('session'));
-
-            $authManager->resolveUsersUsing(function (UserResolver $resolver) {
-                return n
-
-            });
+            $authManager
+                ->createTokenDriver('mw-session', config('session'));
         });
     }
 
-
-    protected function getCokies(SessionGuard $guard)
+    protected function getCookie(SessionGuard $guard)
     {
-        if (App::environment('local')) {
-            return $guard->getCookieJar()->make('PPAUTH', )
+        if ($this->environment('local')) {
+            return $this->localCookie();
         }
+
         $guard->getCookieJar()->getQueuedCookies();
     }
 
-
-    /**
-     *  $this->app->resolving(SessionGuard::class, function (SessionGuard $guard, $app) {
-            $request = $guard->getRequest();
-            $request->setSession()
-        });
-
-        $this->app->singleton(Mindaweb::class, function (AuthManager $auth) {
-            $sessionGuard = $auth->createSessionDriver('mw-session', config('session'));
-        });
-
-
-        $cookies = $auth->createSessionDriver('mw-session', config('session'));
-
-
-        $auth->resolveUsersUsing(function (HttpProvider $provider) {
-            return $provider->resolve(['uid' => $name]);
-        })->createSessionDriver('mw-session', config('session'))->setDispatcher(function (Dispatcher $dispatch) {
-            $dispatch->dispatch();
-        })
-
-     *
-     * @return void
-     */
-    protected function getResolver()
+    protected function localCookie()
     {
+        $rawCookie = config('auth.localCookie');
+        $cookie = Cookie::make();
     }
 }
