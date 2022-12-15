@@ -12,18 +12,16 @@ class HttpClient
     /**
      * Tech user's BasicAuth creds.
      *
-     * Inject by Service Container.
-     *
      * @var array
      */
-    private array $userCredentials;
+    private $userCredentials;
 
     /**
      * Pending request to host's root
      *
      * @var PendingRequest
      */
-    private PendingRequest $request;
+    private $request;
 
 
 
@@ -36,15 +34,14 @@ class HttpClient
 
     /**
      * Resolving pending request with given filters.
-     * Fakes response for local environment.
      *
      * @param array $options
      * @return Response
      */
-    public function resolve(array $options)
+    public function getResolved(array $options)
     {
         if (App::environment('local')) {
-            return $this->fakeRequest();
+            return $this->getRequest();
         }
 
         return $this->request->get($this->path, $options);
@@ -56,7 +53,7 @@ class HttpClient
      * @param string $url
      * @return self
      */
-    public function withPath(string $path = '/'): self
+    public function setPath(string $path = '/'): self
     {
         $this->path = $path;
         return $this;
@@ -65,11 +62,9 @@ class HttpClient
     /**
      * Response is defined in Service Providers.
      *
-     * Depends on use case implementations of client.
-     *
      * @return Response
      */
-    private function fakeRequest()
+    private function getRequest()
     {
         return Http::fake(function (Response $mock) {
             return [$this->final => $mock];

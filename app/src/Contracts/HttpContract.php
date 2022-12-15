@@ -4,7 +4,7 @@ namespace App\src\Contracts;
 
 use Illuminate\Http\Client\Response;
 
-interface HttpClient
+interface HttpContract
 {
 
     /**

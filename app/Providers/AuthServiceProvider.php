@@ -7,17 +7,19 @@ use UserResolver;
 use Psy\Readline\Hoa\EventListener;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Session\SessionServiceProvider;
 use Illuminate\Http\Client\Response;
+
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 use Illuminate\Events\Dispatcher;
-
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Auth\SessionGuard;
-use Illuminate\Auth\AuthManager;
 
+use Illuminate\Auth\GenericUser;
+use Illuminate\Auth\AuthManager;
 use GuzzleHttp\Psr7\HttpFactory;
 use App\src\Services\HttpProvider;
 use App\src\Services\HttpClient;
@@ -37,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register any authentication / authorization services.
+     * Registering customised auth servie, requires ldap
      *
      * @return void
      */
@@ -48,21 +50,20 @@ class AuthServiceProvider extends ServiceProvider
             $sessionDriver = $authManager
                 ->createSessionDriver('mw-session', config('session'));
 
-            $authManager->resolveUsersUsing(function (HttpClient $client) {
-                $return
+            $authManager->resolveUsersUsing(function (UserResolver $resolver) {
+                return n
+
             });
         });
-
-        /**
-         *
-         * use Illuminate\Console\Application; -> web;
-         * @covers Illuminate\Foundation\Application::class
-         *
-         */
     }
 
-    protected function registerHost()
+
+    protected function getCokies(SessionGuard $guard)
     {
+        if (App::environment('local')) {
+            return $guard->getCookieJar()->make('PPAUTH', )
+        }
+        $guard->getCookieJar()->getQueuedCookies();
     }
 
 

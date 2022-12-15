@@ -1,11 +1,11 @@
 {
-    "uid": "nanstis",
-    "picuniqueid": "00338483",
+    "uid": "local",
+    "picuniqueid": "0",
     "picuniverse": "PCO",
     "cn": "ANSTIS Nicholas",
     "managerId": "xcherbuin",
     "temOu": "Release Management & Cut-Over",
-    "temId": "004385A2",
+    "temId": "12",
     "untOu": "Governance & Support",
     "untId": "000KFD",
     "divId": "00043",
@@ -21,5 +21,5 @@
     "addr": "ACE 06",
     "title": "Officer",
     "status": "working",
-    "company": "Banque Pictet & Cie SA",
+    "company": "Banque Pictet & Cie SA"
 }
