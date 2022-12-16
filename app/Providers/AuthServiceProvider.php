@@ -16,8 +16,9 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Contracts\Session\Session;
-use Illuminate\Auth\SessionGuard;
+use Illuminate\Auth\TokenGuard;
 
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Auth\AuthManager;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -57,8 +58,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->app->resolve(App::class, function (App $app) {
             $authManager = new AuthManager($app);
-            $authManager
-                ->createTokenDriver('mw-session', config('session'));
+            $httpClient = new HttpClient()
+
+
+           new TokenGuard();
+
+            (new AuthManager($app))
+                ->setDefaultDriver($driver)
+                ->setProvider()
+
         });
     }
 

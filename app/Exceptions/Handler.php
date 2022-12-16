@@ -2,27 +2,23 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use UserException;
 use Throwable;
+use Psr\Log\LogLevel;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
     /**
      * A list of exception types with their corresponding custom log levels.
      *
-     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     * @var array<class-string<Throwable>
      */
     protected $levels = [
-        //
-    ];
-
-    /**
-     * A list of the exception types that are not reported.
-     *
-     * @var array<int, class-string<\Throwable>>
-     */
-    protected $dontReport = [
-        //
+        LogLevel::INFO,
+        LogLevel::ALERT,
+        LogLevel::ERROR,
+        LogLevel::DEBUG,
     ];
 
     /**
@@ -31,7 +27,7 @@ class Handler extends ExceptionHandler
      * @var array<int, string>
      */
     protected $dontFlash = [
-        'current_password',
+        'token',
         'password',
         'password_confirmation',
     ];
@@ -43,6 +39,11 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+       /*
+        *  $this->renderable(function (UserException $e, $request) {
+            return response()->view('errors.invalid-order', [], 500);
+        });
+        */
         $this->reportable(function (Throwable $e) {
             //
         });

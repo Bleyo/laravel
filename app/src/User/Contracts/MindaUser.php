@@ -1,5 +1,0 @@
-<?
-
-interface MindaUser extends Authenticated
-{
-}

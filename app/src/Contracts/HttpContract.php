@@ -6,8 +6,6 @@ use Illuminate\Http\Client\Response;
 
 interface HttpContract
 {
-
-
     /**
      * Resolving pending request with given filters.
      * Fakes response for local environment.
@@ -15,7 +13,7 @@ interface HttpContract
      * @param array $options
      * @return Response
      */
-    public function resolve(array $options);
+    public function resolve(array $options): Response;
 
 
     /**

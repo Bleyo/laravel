@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\src\Services\HttpClient;
 
 class BroadcastServiceProvider extends ServiceProvider
 {
@@ -19,5 +20,7 @@ class BroadcastServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->resolving(HttpClient::class, function ($client, $app) {
+        });
     }
 }
